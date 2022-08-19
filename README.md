@@ -23,6 +23,4 @@ yarn dev
 
 ## Tecnologias utilizadas no frontend
 
-* (https://skills.thijs.gg/icons?i=react&theme=light)React
-* Typescript
-* Chakra UI
+[![My Skills](https://skills.thijs.gg/icons?i=js,html,css,wasm)](https://skills.thijs.gg)
