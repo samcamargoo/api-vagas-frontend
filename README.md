@@ -13,6 +13,14 @@
 - [ ] Página para cadastro de vagas
 - [ ] Página para se candidatar à vaga
 
+## Rodando o projeto
+
+```
+git clone https://github.com/samcamargoo/api-vagas-frontend.git
+executar yarn install
+yarn dev
+```
+
 ## Tecnologias utilizadas no frontend
 
 * React
