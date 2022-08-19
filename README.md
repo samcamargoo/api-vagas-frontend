@@ -23,4 +23,4 @@ yarn dev
 
 ## Tecnologias utilizadas no frontend
 
-[![My Skills](https://skills.thijs.gg/icons?i=js,html,css,wasm)](https://skills.thijs.gg)
+[![My Skills](https://skills.thijs.gg/icons?i=react,html,css)](https://skills.thijs.gg)
