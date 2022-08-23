@@ -34,9 +34,10 @@ export function LoginPage() {
        loginUsuario(data)
       .then((success) => {
         const tokenJwt = success.data.token;
-        setAuth({ usuario, password, tokenJwt });
+        const nome = success.data.nome;
+        setAuth({ usuario, password, tokenJwt, nome });
         setToken(tokenJwt);
-        navigate("/dashboard", { replace: true });
+        navigate(from, { replace: true });
         setUsuario("");
         setPassword("");
         
