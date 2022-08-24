@@ -1,8 +1,9 @@
 export type Vaga = {
 
     id: number,
-    titulo: string,
+    cargo: string,
     descricao: string,
-    tipo: string,
-    modelo: string
+    senioridade: string,
+    modelo: string,
+    adicionadaEm: string
 }

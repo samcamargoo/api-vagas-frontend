@@ -18,6 +18,7 @@ export function loginUsuario(data: UsuarioLogin) {
     });
 }
 
+
 export function setUsuarioLogado(data: UsuarioLogin) {
 
     let parsedData = JSON.stringify(data);
