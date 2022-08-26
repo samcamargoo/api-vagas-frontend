@@ -1,21 +1,12 @@
-import {
-  CloseIcon,
-  DeleteIcon,
-  EditIcon,
-  StarIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Box,
   Button,
-  Container,
   Flex,
   FormControl,
   FormLabel,
   Heading,
   HStack,
-  Icon,
   IconButton,
   Input,
   Modal,
@@ -34,6 +25,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 import { Vaga } from "../models/IVagas";
 import {
   cadastrarVaga,
@@ -41,8 +34,6 @@ import {
   editarVaga,
   getVagas,
 } from "../services/Vagas";
-import { ModalView } from "./ModalView";
-import { toast } from "react-toastify";
 
 export function VagaBoard() {
   const [vagas, setVagas] = useState<Vaga[]>([]);
@@ -83,6 +74,7 @@ export function VagaBoard() {
     console.log(data);
     cadastrarVaga(data).then((res) => {
       listVagas();
+      reset();
       onAdicionarClose();
     });
   };
@@ -103,12 +95,14 @@ export function VagaBoard() {
 
   function deleteVaga(id: number) {
     console.log(id);
-    deletarVaga(id).then(() => {
-      toast.success("Vaga deletada com sucesso!", {autoClose: 1000});
-      listVagas();
-    }).catch(() => {
-      toast.error("Erro ao deletar vaga");
-    });
+    deletarVaga(id)
+      .then(() => {
+        toast.success("Vaga deletada com sucesso!", { autoClose: 1000 });
+        listVagas();
+      })
+      .catch(() => {
+        toast.error("Erro ao deletar vaga");
+      });
   }
 
   function onError() {
