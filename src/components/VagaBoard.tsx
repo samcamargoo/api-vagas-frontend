@@ -1,17 +1,28 @@
-import { DeleteIcon, EditIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
+import {
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  StarIcon,
+  ViewIcon,
+} from "@chakra-ui/icons";
 import {
   Badge,
   Box,
+  Button,
   Container,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   HStack,
+  Icon,
   IconButton,
   Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Select,
@@ -22,18 +33,34 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Vaga } from "../models/IVagas";
-import { deletarVaga, getVagas } from "../services/Vagas";
+import { cadastrarVaga, deletarVaga, editarVaga, getVagas } from "../services/Vagas";
 import { ModalView } from "./ModalView";
+import { toast } from "react-toastify";
 
 export function VagaBoard() {
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAdicionarOpen,
+    onOpen: onAdicionarOpen,
+    onClose: onAdicionarClose,
+  } = useDisclosure();
   const [vaga, setVaga] = useState<Vaga>();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const modelos: string[] = ["REMOTO", "PRESENCIAL", "HIBRIDO"];
 
   useEffect(() => {
     listVagas();
-  }, []);
+  }, [vaga]);
 
   function listVagas() {
     getVagas()
@@ -41,56 +68,294 @@ export function VagaBoard() {
       .catch();
   }
 
-  function editVaga(vaga: Vaga) {
-    setVaga(vaga);
-    onOpen()
+
+  const addVaga: SubmitHandler<Vaga> = (data) => {
+    console.log(data)
+    cadastrarVaga(data).then(res => {
+      listVagas();
+      onAdicionarClose()
+    })
   }
+
+  const putVaga: SubmitHandler<Vaga> = (data) => {
+    console.log(data);
+    editarVaga(data.id, data)
+      .then((res) => {
+        onClose();
+        toast.success("Vaga editada com sucesso!", { autoClose: 1000 });
+        reset();
+        listVagas();
+      })
+      .catch((error) => {
+        toast.error("*Campos Obrigatórios", { autoClose: 1000 });
+      });
+  };
 
   function deleteVaga(id: number) {
     deletarVaga(id).finally(() => {
       listVagas();
     });
   }
+
+  function onError() {
+    toast.error("*Campos obrigatórios");
+  }
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <form>
-              <VStack>
-              <Input type="text" value={vaga?.cargo}/>
-              <Textarea value={vaga?.descricao}/>
-              <Select>
-                
-              </Select> 
-              </VStack> 
-              </form>  
-            </ModalBody>
+          <ModalHeader display="flex">
+            {" "}
+            Editar Vaga
+            <Spacer />
+            <IconButton
+              background="none"
+              aria-label="fechar"
+              icon={<CloseIcon />}
+              w="2px"
+              onClick={() => {
+                reset();
+                onClose();
+              }}
+            ></IconButton>
           </ModalHeader>
+
+          <form onSubmit={handleSubmit(putVaga)}>
+            <ModalBody>
+              <VStack>
+                <FormControl>
+                  <Input
+                    type="hidden"
+                    value={vaga?.id}
+                    {...register("id")}
+                  ></Input>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Cargo*</FormLabel>
+                  <Input
+                    defaultValue={vaga?.cargo}
+                    {...register("cargo")}
+                  ></Input>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Descrição*</FormLabel>
+                  <Textarea
+                    overflow="hidden"
+                    {...register("descricao")}
+                    defaultValue={vaga?.descricao}
+                  ></Textarea>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Modelo*</FormLabel>
+                  <Select {...register("modelo")}>
+                    {vaga?.modelo === "REMOTO" ? (
+                      <>
+                        <option value={vaga?.modelo}>{vaga?.modelo}</option>
+                        <option value="HIBRIDO">HIBRIDO</option>
+                        <option value="PRESENCIAL">PRESENCIAL</option>
+                      </>
+                    ) : vaga?.modelo === "HIBRIDO" ? (
+                      <>
+                        <option value={vaga?.modelo}>{vaga?.modelo}</option>
+                        <option value="REMOTO">REMOTO</option>
+                        <option value="PRESENCIAL">PRESENCIAL</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value={vaga?.modelo}>{vaga?.modelo}</option>
+                        <option value="REMOTO">REMOTO</option>
+                        <option value="HIBRIDO">HIBRIDO</option>
+                      </>
+                    )}
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Senioridade*</FormLabel>
+                  <Select
+                    {...register("senioridade", {
+                      required: "Campo Obrigatorio",
+                    })}
+                  >
+                    {vaga?.senioridade === "ESTAGIO" ? (
+                      <>
+                        <option value={vaga?.senioridade}>
+                          {vaga?.senioridade}
+                        </option>
+                        <option value="JUNIOR">JUNIOR</option>
+                        <option value="PLENO">PLENO</option>
+                        <option value="SENIOR">SENIOR</option>
+                      </>
+                    ) : vaga?.modelo === "JUNIOR" ? (
+                      <>
+                        <option value={vaga?.senioridade}>
+                          {vaga?.senioridade}
+                        </option>
+                        <option value="ESTAGIO">ESTAGIO</option>
+                        <option value="PLENO">PLENO</option>
+                        <option value="SENIOR">SENIOR</option>
+                      </>
+                    ) : vaga?.modelo === "PLENO" ? (
+                      <>
+                        <option value={vaga?.senioridade}>
+                          {vaga?.senioridade}
+                        </option>
+                        <option value="ESTAGIO">ESTAGIO</option>
+                        <option value="JUNIOR">JUNIOR</option>
+                        <option value="SENIOR">SENIOR</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value={vaga?.senioridade}>
+                          {vaga?.senioridade}
+                        </option>
+                        <option value="ESTAGIO">ESTAGIO</option>
+                        <option value="JUNIOR">JUNIOR</option>
+                        <option value="PLENO">PLENO</option>
+                      </>
+                    )}
+                  </Select>
+                </FormControl>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                onClick={() => {
+                  reset();
+                  onClose();
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                ml={2}
+                colorScheme="teal"
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Editar
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
+
+      <Modal isOpen={isAdicionarOpen} onClose={onAdicionarClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader display="flex">
+            {" "}
+            Adicionar Vaga
+            <Spacer />
+            <IconButton
+              background="none"
+              aria-label="fechar"
+              icon={<CloseIcon />}
+              w="2px"
+              onClick={() => {
+                reset();
+                onAdicionarClose();
+              }}
+            ></IconButton>
+          </ModalHeader>
+
+          <form onSubmit={handleSubmit(addVaga)}>
+            <ModalBody>
+              <VStack>
+                <FormControl></FormControl>
+                <FormControl>
+                  <FormLabel>Cargo*</FormLabel>
+                  <Input {...register("cargo")}></Input>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Descrição*</FormLabel>
+                  <Textarea {...register("descricao")}></Textarea>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Modelo*</FormLabel>
+                  <Select {...register("modelo")} placeholder="Selecione Modelo">
+                    <option value="REMOTO">REMOTO</option>
+                    <option value="HIBRIDO">HIBRIDO</option>
+                    <option value="PRESENCIAL">PRESENCIAL</option>
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Senioridade*</FormLabel>
+                  <Select placeholder="Selecione senioridade"
+                    {...register("senioridade", {
+                      required: "Campo Obrigatorio",
+                    })}
+                  >
+                    <option value="ESTAGIO">ESTAGIO
+                    </option>
+                    <option value="JUNIOR">JUNIOR</option>
+                    <option value="PLENO">PLENO</option>
+                    <option value="SENIOR">SENIOR</option>
+                  </Select>
+                </FormControl>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                onClick={() => {
+                  reset();
+                  onAdicionarClose();
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                ml={2}
+                colorScheme="teal"
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Adicionar
+              </Button>
+            </ModalFooter>
+          </form>
+        </ModalContent>
+      </Modal>
+
       <Flex
-        width="1000px"
-        ml={3}
+        maxWidth="600px"
+        ml={5}
         mt={4}
         borderRadius="7px"
         justifyContent="center"
       >
-        <Flex ml={2} wrap="wrap">
+        <Flex ml={2} wrap="wrap" width="700px" overflow="hidden" padding="3">
+          <Flex mb={1}>
+            <Button
+              background="teal.300"
+              _hover={{
+                background: "teal.400",
+              }}
+              onClick={onAdicionarOpen}
+            >
+              Adicionar Vaga
+            </Button>
+          </Flex>
+
           {vagas.map((vaga, index) => (
             <>
               <Flex
-                width="300px"
-                mr={2}
+                backgroundColor="white"
+                width="100%"
+                flexDirection="column"
+                mb={3}
                 justifyContent="space-between"
                 borderRadius="7px"
                 height="300px"
-                boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.1)"
+                boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.3)"
                 _hover={{
-                  background: "teal.100",
                   cursor: "pointer",
                 }}
                 flexDir="column"
@@ -104,26 +369,21 @@ export function VagaBoard() {
                 </Flex>
 
                 <Flex>
-                  <Text noOfLines={3}>{vaga.descricao}</Text>
+                  <Text noOfLines={4}>{vaga.descricao}</Text>
                 </Flex>
-                <Flex mt={3}>
+
+                <Flex>
                   <HStack>
-                    <Badge colorScheme="green" borderRadius="full">
+                    <Badge mr={1} colorScheme="green" borderRadius="full">
                       {vaga.modelo}
                     </Badge>
+
                     <Badge colorScheme="purple" borderRadius="full">
                       {vaga.senioridade}
                     </Badge>
                   </HStack>
                   <Spacer />
                   <Flex>
-                    <Text fontSize="10px">
-                      Adicionada em: {vaga.adicionadaEm}
-                    </Text>
-                  </Flex>
-                </Flex>
-                <Flex mb={3}>
-                  <HStack>
                     <IconButton
                       onClick={() => deleteVaga(vaga.id)}
                       _hover={{
@@ -145,7 +405,10 @@ export function VagaBoard() {
                     />
 
                     <IconButton
-                      onClick={() => editVaga(vaga)}
+                      onClick={() => {
+                        setVaga(vaga);
+                        onOpen();
+                      }}
                       _hover={{
                         background: "none",
                       }}
@@ -156,20 +419,7 @@ export function VagaBoard() {
                       aria-label="Search database"
                       icon={<EditIcon _hover={{}} />}
                     />
-
-                    <IconButton
-                      onClick={() => deleteVaga(vaga.id)}
-                      _hover={{
-                        background: "none",
-                      }}
-                      _active={{
-                        background: "none",
-                      }}
-                      background="none"
-                      aria-label="Search database"
-                      icon={<ViewIcon _hover={{}} />}
-                    />
-                  </HStack>
+                  </Flex>
                 </Flex>
               </Flex>
             </>
