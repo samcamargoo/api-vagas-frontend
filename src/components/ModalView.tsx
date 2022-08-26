@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Vaga } from "../models/IVagas";
 
-export function ModalView(props: any) {
+export function ModalView({showModalButtonText, modalHeader, modalBody}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
 
@@ -28,7 +28,19 @@ export function ModalView(props: any) {
   }
   return (
     <>
-     
+     <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalContent>
+        <ModalHeader>
+          <ModalCloseButton />
+        </ModalHeader>
+        <ModalBody>
+          <p>teste</p>
+        </ModalBody>
+        <ModalFooter>
+          asdasd
+        </ModalFooter>
+      </ModalContent>
+     </Modal>
     </>
   );
 }

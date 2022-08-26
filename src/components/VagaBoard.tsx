@@ -35,7 +35,12 @@ import {
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Vaga } from "../models/IVagas";
-import { cadastrarVaga, deletarVaga, editarVaga, getVagas } from "../services/Vagas";
+import {
+  cadastrarVaga,
+  deletarVaga,
+  editarVaga,
+  getVagas,
+} from "../services/Vagas";
 import { ModalView } from "./ModalView";
 import { toast } from "react-toastify";
 
@@ -46,6 +51,12 @@ export function VagaBoard() {
     isOpen: isAdicionarOpen,
     onOpen: onAdicionarOpen,
     onClose: onAdicionarClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
   } = useDisclosure();
   const [vaga, setVaga] = useState<Vaga>();
 
@@ -68,14 +79,13 @@ export function VagaBoard() {
       .catch();
   }
 
-
   const addVaga: SubmitHandler<Vaga> = (data) => {
-    console.log(data)
-    cadastrarVaga(data).then(res => {
+    console.log(data);
+    cadastrarVaga(data).then((res) => {
       listVagas();
-      onAdicionarClose()
-    })
-  }
+      onAdicionarClose();
+    });
+  };
 
   const putVaga: SubmitHandler<Vaga> = (data) => {
     console.log(data);
@@ -92,8 +102,12 @@ export function VagaBoard() {
   };
 
   function deleteVaga(id: number) {
-    deletarVaga(id).finally(() => {
+    console.log(id);
+    deletarVaga(id).then(() => {
+      toast.success("Vaga deletada com sucesso!", {autoClose: 1000});
       listVagas();
+    }).catch(() => {
+      toast.error("Erro ao deletar vaga");
     });
   }
 
@@ -103,6 +117,7 @@ export function VagaBoard() {
 
   return (
     <>
+      {/*Modal de edição de vaga */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -244,6 +259,7 @@ export function VagaBoard() {
         </ModalContent>
       </Modal>
 
+      {/*Modal de adiçao de vaga */}
       <Modal isOpen={isAdicionarOpen} onClose={onAdicionarClose}>
         <ModalOverlay />
         <ModalContent>
@@ -279,7 +295,10 @@ export function VagaBoard() {
 
                 <FormControl>
                   <FormLabel>Modelo*</FormLabel>
-                  <Select {...register("modelo")} placeholder="Selecione Modelo">
+                  <Select
+                    {...register("modelo")}
+                    placeholder="Selecione Modelo"
+                  >
                     <option value="REMOTO">REMOTO</option>
                     <option value="HIBRIDO">HIBRIDO</option>
                     <option value="PRESENCIAL">PRESENCIAL</option>
@@ -288,13 +307,13 @@ export function VagaBoard() {
 
                 <FormControl>
                   <FormLabel>Senioridade*</FormLabel>
-                  <Select placeholder="Selecione senioridade"
+                  <Select
+                    placeholder="Selecione senioridade"
                     {...register("senioridade", {
                       required: "Campo Obrigatorio",
                     })}
                   >
-                    <option value="ESTAGIO">ESTAGIO
-                    </option>
+                    <option value="ESTAGIO">ESTAGIO</option>
                     <option value="JUNIOR">JUNIOR</option>
                     <option value="PLENO">PLENO</option>
                     <option value="SENIOR">SENIOR</option>
@@ -324,6 +343,32 @@ export function VagaBoard() {
         </ModalContent>
       </Modal>
 
+      {/*Modal de confirmar exclusão de vaga */}
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} isCentered>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>
+              {" "}
+              Tem certeza que deseja deletar a vaga?
+              <ModalCloseButton />
+            </ModalHeader>
+            <ModalBody></ModalBody>
+            <ModalFooter>
+              <Button onClick={onDeleteClose}>Cancelar</Button>
+              <Button
+                colorScheme="red"
+                ml={2}
+                onClick={() => {
+                  deleteVaga(vaga?.id);
+                  onDeleteClose();
+                }}
+              >
+                Sim
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
       <Flex
         maxWidth="600px"
         ml={5}
@@ -385,7 +430,10 @@ export function VagaBoard() {
                   <Spacer />
                   <Flex>
                     <IconButton
-                      onClick={() => deleteVaga(vaga.id)}
+                      onClick={() => {
+                        setVaga(vaga);
+                        onDeleteOpen();
+                      }}
                       _hover={{
                         background: "none",
                       }}
