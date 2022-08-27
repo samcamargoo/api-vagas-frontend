@@ -31,6 +31,8 @@ export function VagasPage() {
           <VagaBoard />
         </Flex>
       </Flex>
+
+      
     </>
   );
 }

@@ -58,8 +58,6 @@ export function VagaBoard() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const modelos: string[] = ["REMOTO", "PRESENCIAL", "HIBRIDO"];
-
   useEffect(() => {
     listVagas();
   }, [vaga]);
@@ -74,6 +72,7 @@ export function VagaBoard() {
     console.log(data);
     cadastrarVaga(data).then((res) => {
       listVagas();
+      toast.success("Vaga adicionada com sucesso!");
       reset();
       onAdicionarClose();
     });
@@ -111,6 +110,7 @@ export function VagaBoard() {
 
   return (
     <>
+    <Flex mb={4}>
       {/*Modal de edição de vaga */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -363,110 +363,108 @@ export function VagaBoard() {
           </ModalContent>
         </ModalOverlay>
       </Modal>
-      <Flex
-        maxWidth="600px"
-        ml={5}
+
+      {/* <Flex
+        ml={2}
         mt={4}
+        backgroundColor="blue"
+        wrap="wrap"
+        width="700px"
+        overflow="hidden"
+        padding="3"
         borderRadius="7px"
-        justifyContent="center"
-      >
-        <Flex ml={2} wrap="wrap" width="700px" overflow="hidden" padding="3">
-          <Flex mb={1}>
-            <Button
-              background="teal.300"
-              _hover={{
-                background: "teal.400",
-              }}
-              onClick={onAdicionarOpen}
+        height="100vh"
+      > */}
+      <Flex flexDir="column" width="700px" mt={4} ml={3} overflow="hidden">
+        <Flex>
+          <Button colorScheme="teal" onClick={onAdicionarOpen}>
+            Adicionar Vaga
+          </Button>
+        </Flex>
+
+        {vagas.map((vaga, index) => (
+          <>
+            <Flex
+              mt={2}
+              ml={1}
+              mr={1}
+              width="99%"
+              mb={3}
+              justifyContent="space-between"
+              borderRadius="7px"
+              height="300px"
+              boxShadow="0 0 2px 0 rgba(0, 0, 0, 0.3)"
+              flexDir="column"
+              p="1"
+              key={index}
             >
-              Adicionar Vaga
-            </Button>
-          </Flex>
+              <Flex flexDir="column" justifyContent="center" mt={3}>
+                <Heading as="h3" fontSize="15px" align="center">
+                  {vaga.cargo}
+                </Heading>
+              </Flex>
 
-          {vagas.map((vaga, index) => (
-            <>
-              <Flex
-                backgroundColor="white"
-                width="100%"
-                flexDirection="column"
-                mb={3}
-                justifyContent="space-between"
-                borderRadius="7px"
-                height="300px"
-                boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.3)"
-                _hover={{
-                  cursor: "pointer",
-                }}
-                flexDir="column"
-                p="1"
-                key={index}
-              >
-                <Flex flexDir="column" justifyContent="center" mt={3}>
-                  <Heading as="h3" fontSize="15px" align="center">
-                    {vaga.cargo}
-                  </Heading>
-                </Flex>
+              <Flex>
+                <Text noOfLines={4}>{vaga.descricao}</Text>
+              </Flex>
 
+              <Flex>
+                <HStack>
+                  <Badge mr={1} colorScheme="green" borderRadius="full">
+                    {vaga.modelo}
+                  </Badge>
+
+                  <Badge colorScheme="purple" borderRadius="full">
+                    {vaga.senioridade}
+                  </Badge>
+                </HStack>
+                <Spacer />
                 <Flex>
-                  <Text noOfLines={4}>{vaga.descricao}</Text>
-                </Flex>
+                  <IconButton
+                    onClick={() => {
+                      setVaga(vaga);
+                      onDeleteOpen();
+                    }}
+                    _hover={{
+                      background: "none",
+                    }}
+                    _active={{
+                      background: "none",
+                    }}
+                    background="none"
+                    aria-label="Search database"
+                    icon={
+                      <DeleteIcon
+                        color="red.400"
+                        _hover={{
+                          color: "red.600",
+                        }}
+                      />
+                    }
+                  />
 
-                <Flex>
-                  <HStack>
-                    <Badge mr={1} colorScheme="green" borderRadius="full">
-                      {vaga.modelo}
-                    </Badge>
-
-                    <Badge colorScheme="purple" borderRadius="full">
-                      {vaga.senioridade}
-                    </Badge>
-                  </HStack>
-                  <Spacer />
-                  <Flex>
-                    <IconButton
-                      onClick={() => {
-                        setVaga(vaga);
-                        onDeleteOpen();
-                      }}
-                      _hover={{
-                        background: "none",
-                      }}
-                      _active={{
-                        background: "none",
-                      }}
-                      background="none"
-                      aria-label="Search database"
-                      icon={
-                        <DeleteIcon
-                          color="red.400"
-                          _hover={{
-                            color: "red.600",
-                          }}
-                        />
-                      }
-                    />
-
-                    <IconButton
-                      onClick={() => {
-                        setVaga(vaga);
-                        onOpen();
-                      }}
-                      _hover={{
-                        background: "none",
-                      }}
-                      _active={{
-                        background: "none",
-                      }}
-                      background="none"
-                      aria-label="Search database"
-                      icon={<EditIcon _hover={{}} />}
-                    />
-                  </Flex>
+                  <IconButton
+                    onClick={() => {
+                      setVaga(vaga);
+                      onOpen();
+                    }}
+                    _hover={{
+                      background: "none",
+                    }}
+                    _active={{
+                      background: "none",
+                    }}
+                    background="none"
+                    aria-label="Search database"
+                    icon={<EditIcon _hover={{}} />}
+                  />
                 </Flex>
               </Flex>
-            </>
-          ))}
-        </Flex>
+            </Flex>
+          </>
+        ))}
+      </Flex>
+      {/* </Flex> */}
       </Flex>
     </>
   );

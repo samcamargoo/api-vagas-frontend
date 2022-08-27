@@ -1,4 +1,12 @@
-import { Badge, Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Flex,
+  Heading,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Vaga } from "../models/IVagas";
@@ -30,11 +38,27 @@ export function Dashboard() {
 
         <Flex ml={5} mt={5}>
           {vagas.length < 1 ? (
-            <Text>Você não possui vagas cadastradas</Text>
+            <Flex
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="300px"
+              height="200px"
+              boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.3)"
+              borderRadius="lg"
+            >
+              <VStack>
+                <Heading as="h3" size="md" align="center">
+                  Você não possui vagas cadastradas
+                </Heading>
+                <Link color="teal" fontSize="14px" as={ReachLink} to="/vagas">
+                  Adicionar vaga
+                </Link>
+              </VStack>
+            </Flex>
           ) : (
             <>
-              <Box
-                display="flex"
+              <Flex
                 alignItems="center"
                 justifyContent="center"
                 width="300px"
@@ -42,42 +66,59 @@ export function Dashboard() {
                 boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.3)"
                 borderRadius="lg"
                 flexDir="column"
-                _hover={{
-                  background: "teal.100",
-                  cursor: "pointer",
-                }}
               >
-                <Box>
+                <Flex>
                   <Heading as="h3" size="md">
                     Vagas Cadastradas
                   </Heading>
-                </Box>
+                </Flex>
 
-                <Box
+                <Flex
                   mt={5}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                 >
                   <Text fontSize="30px">{vagas.length}</Text>
-                </Box>
-                <Box>
-                  <Link as={ReachLink} to="/vagas">
+                </Flex>
+                <Flex>
+                  <Link as={ReachLink} to="/vagas" color="teal" fontSize="14px">
                     <Text>Visualizar Vagas</Text>
                   </Link>
-                </Box>
-              </Box>
+                </Flex>
+              </Flex>
 
-              <Box
-                display="flex"
+              <Flex
                 alignItems="center"
+                justifyContent="center"
                 width="300px"
                 height="200px"
                 boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.3)"
                 borderRadius="lg"
                 flexDir="column"
                 ml={2}
-              ></Box>
+              >
+                <Flex>
+                  <Heading as="h3" size="md">
+                    Candidaturas
+                  </Heading>
+                </Flex>
+
+                <Flex
+                  mt={5}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text fontSize="30px">0</Text>
+                </Flex>
+                <Flex>
+                  <Link as={ReachLink} to="#" color="teal" fontSize="14px">
+                    <Text>Visualizar Candidaturas</Text>
+                  </Link>
+                </Flex>
+              </Flex>
+
             </>
           )}
         </Flex>
