@@ -8,10 +8,23 @@
     - [X] Login e Cadastro de Usuário
     - [ ] Função para recuperar senha
     - [ ] Login automatico enquanto o Token JWT for válido
-    - [ ] Criaçao do dashboard
+    
+- [ ] Vagas
+    - [X] Cadastro de vagas
+    - [X] Editar vaga
+    - [X] Excluir vaga
+    - [ ] Funcionalidade para candidatos se candidatarem às vagas cadastradas
 
-- [ ] Página para cadastro de vagas
-- [ ] Página para se candidatar à vaga
+- [X] Dashboard
+
+- [ ] Adicionar responsividade
+
+## O que aprendi neste projeto?
+```
+React Hooks
+Consumo de API com axios
+Chakra UI
+```
 
 ## Rodando o projeto
 
@@ -24,3 +37,7 @@ yarn dev
 ## Tecnologias utilizadas no frontend
 
 [![My Skills](https://skills.thijs.gg/icons?i=react,html,css)](https://skills.thijs.gg)
+
+## Repositório para o backend utilizado
+
+https://github.com/samcamargoo/api-vagas
