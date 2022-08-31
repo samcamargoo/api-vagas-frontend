@@ -80,7 +80,7 @@ export function VagaBoard() {
 
   const putVaga: SubmitHandler<Vaga> = (data) => {
     console.log(data);
-    editarVaga(data.id, data)
+    editarVaga(data?.id as number, data)
       .then((res) => {
         onClose();
         toast.success("Vaga editada com sucesso!", { autoClose: 1000 });
