@@ -1,18 +1,11 @@
-import {
-  Badge,
-  Box,
-  Flex,
-  Heading,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { Sidebar } from "./Sidebar";
-import { Vaga } from "../models/IVagas";
-import axios from "axios";
-import { getVagas } from "../services/Vagas";
-import { Link as ReachLink } from "react-router-dom";
+import { Flex, Heading, Link, Text, VStack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Link as ReachLink } from 'react-router-dom';
+
+import { Vaga } from '../models/IVagas';
+import { getVagas } from '../services/Vagas';
+import { Sidebar } from './Sidebar';
+
 export function Dashboard() {
   document.title = "Dashboard";
 
@@ -48,9 +41,11 @@ export function Dashboard() {
               borderRadius="lg"
             >
               <VStack>
-                <Heading as="h3" size="md" align="center">
+                
+                <Heading as="h3" size="md" textAlign="center">
                   Você não possui vagas cadastradas
                 </Heading>
+                
                 <Link color="teal" fontSize="14px" as={ReachLink} to="/vagas">
                   Adicionar vaga
                 </Link>

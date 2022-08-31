@@ -56,7 +56,7 @@ export function VagaBoard() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<Vaga>();
 
   useEffect(() => {
     listVagas();
@@ -68,7 +68,7 @@ export function VagaBoard() {
       .catch();
   }
 
-  const addVaga: SubmitHandler<Vaga> = (data) => {
+  const addVaga: SubmitHandler<Vaga> = (data: Vaga) => {
     console.log(data);
     cadastrarVaga(data).then((res) => {
       listVagas();
@@ -353,7 +353,7 @@ export function VagaBoard() {
                 colorScheme="red"
                 ml={2}
                 onClick={() => {
-                  deleteVaga(vaga?.id);
+                  deleteVaga(vaga?.id as number);
                   onDeleteClose();
                 }}
               >
@@ -399,7 +399,7 @@ export function VagaBoard() {
               key={index}
             >
               <Flex flexDir="column" justifyContent="center" mt={3}>
-                <Heading as="h3" fontSize="15px" align="center">
+                <Heading as="h3" fontSize="15px" textAlign="center">
                   {vaga.cargo}
                 </Heading>
               </Flex>

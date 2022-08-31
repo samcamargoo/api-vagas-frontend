@@ -35,7 +35,7 @@ export function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<UsuarioCadastro>();
 
   const [usuario, setUsuario] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -43,7 +43,7 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
-  const onSubmit: SubmitHandler<UsuarioCadastro> = (data) => {
+  const onSubmit: SubmitHandler<UsuarioCadastro> = (data: UsuarioCadastro) => {
     const user = data;
     const login: UsuarioLogin = data;
     postUsuario(user)
@@ -85,7 +85,7 @@ export function RegisterPage() {
             <Flex align="center" justify="center" mb="5px">
               <Heading as="h3" fontSize="20px">Cadastro de Usuário</Heading>
             </Flex>
-            <FormControl isInvalid={errors.nome}>
+            <FormControl >
               <Input
                 id="nome"
                 size="sm"
@@ -96,7 +96,7 @@ export function RegisterPage() {
               />
             </FormControl>
 
-            <FormControl isInvalid={errors.sobrenome} mt={2}>
+            <FormControl  mt={2}>
               <Input
                 id="sobrenome"
                 placeholder="Sobrenome*"
@@ -107,7 +107,7 @@ export function RegisterPage() {
               />
             </FormControl>
 
-            <FormControl isInvalid={errors.email} mt={2}>
+            <FormControl mt={2}>
               <Input
                 id="email"
                 placeholder="Email*"
@@ -124,7 +124,7 @@ export function RegisterPage() {
               <FormErrorMessage>Email inválido.</FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={errors.password} mt={2}>
+            <FormControl mt={2}>
               <Input
                 id="password"
                 placeholder="Senha*"
@@ -137,7 +137,7 @@ export function RegisterPage() {
               />
             </FormControl>
 
-            <FormControl isInvalid={errors.telefone} mt={2}>
+            <FormControl mt={2}>
               <Input
                 id="telefone"
                 placeholder="Celular*"

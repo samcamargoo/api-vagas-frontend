@@ -35,9 +35,9 @@ export function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<UsuarioLogin>();
 
-  const onSubmit: SubmitHandler<UsuarioLogin> = (data) => {
+  const onSubmit: SubmitHandler<UsuarioLogin> = (data: UsuarioLogin) => {
     loginUsuario(data)
       .then((success) => {
         const tokenJwt = success.data.token;
@@ -72,7 +72,7 @@ export function LoginPage() {
           <Flex align="center" justify="center" mb="5px">
               <Heading as="h3" fontSize="20px">Bem vindo(a)</Heading>
             </Flex>
-            <FormControl isInvalid={errors.email}>
+            <FormControl>
               <Input
                 id="email"
                 size="sm"
@@ -83,7 +83,7 @@ export function LoginPage() {
               
             </FormControl>
 
-            <FormControl isInvalid={errors.password} mt={2} mb={2}>
+            <FormControl mt={2} mb={2}>
               <Input
                 id="password"
                 size="sm"
