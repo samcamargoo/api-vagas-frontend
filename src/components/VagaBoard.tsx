@@ -273,7 +273,7 @@ export function VagaBoard() {
             ></IconButton>
           </ModalHeader>
 
-          <form onSubmit={handleSubmit(addVaga)}>
+          <form onSubmit={handleSubmit(addVaga, onError)}>
             <ModalBody>
               <VStack>
                 <FormControl></FormControl>
