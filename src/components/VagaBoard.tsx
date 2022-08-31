@@ -279,18 +279,18 @@ export function VagaBoard() {
                 <FormControl></FormControl>
                 <FormControl>
                   <FormLabel>Cargo*</FormLabel>
-                  <Input {...register("cargo")}></Input>
+                  <Input {...register("cargo", { required: "Campo Obrigatorio"})}></Input>
                 </FormControl>
 
                 <FormControl>
                   <FormLabel>Descrição*</FormLabel>
-                  <Textarea {...register("descricao")}></Textarea>
+                  <Textarea {...register("descricao", { required: "Campo Obrigatorio"})}></Textarea>
                 </FormControl>
 
                 <FormControl>
                   <FormLabel>Modelo*</FormLabel>
                   <Select
-                    {...register("modelo")}
+                    {...register("modelo", { required: "Campo Obrigatorio"})}
                     placeholder="Selecione Modelo"
                   >
                     <option value="REMOTO">REMOTO</option>
