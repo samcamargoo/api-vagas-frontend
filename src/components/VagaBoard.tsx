@@ -388,7 +388,7 @@ export function VagaBoard() {
               mt={2}
               ml={1}
               mr={1}
-              width="99%"
+              width="600px"
               mb={3}
               justifyContent="space-between"
               borderRadius="7px"
