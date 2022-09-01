@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UsuarioCadastro } from "../models/UsuarioCadastro";
+import InputMask from "react-input-mask";
 import {
   FormControl,
   FormLabel,
@@ -83,9 +84,11 @@ export function RegisterPage() {
         >
           <form onSubmit={handleSubmit(onSubmit, onError)}>
             <Flex align="center" justify="center" mb="5px">
-              <Heading as="h3" fontSize="20px">Cadastro de Usuário</Heading>
+              <Heading as="h3" fontSize="20px">
+                Cadastro de Usuário
+              </Heading>
             </Flex>
-            <FormControl >
+            <FormControl>
               <Input
                 id="nome"
                 size="sm"
@@ -96,7 +99,7 @@ export function RegisterPage() {
               />
             </FormControl>
 
-            <FormControl  mt={2}>
+            <FormControl mt={2}>
               <Input
                 id="sobrenome"
                 placeholder="Sobrenome*"
@@ -139,11 +142,17 @@ export function RegisterPage() {
 
             <FormControl mt={2}>
               <Input
+                as={InputMask}
+                mask="(99) 99999-9999"
                 id="telefone"
                 placeholder="Celular*"
                 size="sm"
                 {...register("telefone", {
                   required: "Campo Obrigatório",
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Telefone Inválido",
+                  },
                 })}
               />
             </FormControl>
