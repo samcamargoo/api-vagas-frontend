@@ -2,6 +2,10 @@
 
 > Website para se candidatar e postar vagas de emprego. 
 
+### Link do projeto online
+
+https://dashboard-vagas.netlify.app/
+
 ### Projeto em Desenvolvimento
 
 - [ ] Cadastro e Login 
