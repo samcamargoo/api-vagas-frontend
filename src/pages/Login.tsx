@@ -7,6 +7,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Heading,
   HStack,
   Input,
@@ -72,8 +73,8 @@ export function LoginPage() {
           <Flex align="center" justify="center" mb="5px">
               <Heading as="h3" fontSize="20px">Bem vindo(a)</Heading>
             </Flex>
-            <FormControl>
-              <Input
+            <FormControl isInvalid>
+              <Input 
                 id="email"
                 size="sm"
                 placeholder="Email"
@@ -83,7 +84,7 @@ export function LoginPage() {
                 }, })}
                 onChange={(e) => setUsuario(e.target.value)}
               />
-              
+              <FormErrorMessage>Email inválido.</FormErrorMessage>
             </FormControl>
 
             <FormControl mt={2} mb={2}>
