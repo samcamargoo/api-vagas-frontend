@@ -49,7 +49,7 @@ export function LoginPage() {
         setPassword("");
       })
       .catch((error) => {
-        toast.error("Erro ao logar", { autoClose: 1000 });
+        toast.error("Email ou senha inválido", { autoClose: 1000 });
       });
   };
 
@@ -77,7 +77,10 @@ export function LoginPage() {
                 id="email"
                 size="sm"
                 placeholder="Email"
-                {...register("email", { required: "Campo Obrigatorio" })}
+                {...register("email", { required: "Campo Obrigatorio",  pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "Email Inválido",
+                }, })}
                 onChange={(e) => setUsuario(e.target.value)}
               />
               
