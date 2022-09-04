@@ -142,8 +142,6 @@ export function RegisterPage() {
 
             <FormControl mt={2}>
               <Input
-                as={InputMask}
-                mask="(99) 99999-9999"
                 id="telefone"
                 placeholder="Celular*"
                 size="sm"
