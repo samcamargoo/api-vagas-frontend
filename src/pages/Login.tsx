@@ -20,7 +20,7 @@ import { loginUsuario, setUsuarioLogado } from "../services/Usuario";
 import { useNavigate, useLocation } from "react-router-dom";
 import { setToken } from "../services/api";
 import { toast } from "react-toastify";
-import {Link as ReachLink} from "react-router-dom"
+import { Link as ReachLink } from "react-router-dom";
 
 export function LoginPage() {
   const { setAuth } = useAuth();
@@ -37,6 +37,10 @@ export function LoginPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<UsuarioLogin>();
+
+  function onError() {
+    return toast.error("Email ou senha inválido");
+  }
 
   const onSubmit: SubmitHandler<UsuarioLogin> = (data: UsuarioLogin) => {
     loginUsuario(data)
@@ -68,23 +72,26 @@ export function LoginPage() {
           margin="auto"
           padding="20px"
         >
-          
           <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex align="center" justify="center" mb="5px">
-              <Heading as="h3" fontSize="20px">Bem vindo(a)</Heading>
+            <Flex align="center" justify="center" mb="5px">
+              <Heading as="h3" fontSize="20px">
+                Bem vindo(a)
+              </Heading>
             </Flex>
-            <FormControl isInvalid>
-              <Input 
+            <FormControl>
+              <Input
                 id="email"
                 size="sm"
                 placeholder="Email"
-                {...register("email", { required: "Campo Obrigatorio",  pattern: {
-                  value: /\S+@\S+\.\S+/,
-                  message: "Email Inválido",
-                }, })}
+                {...register("email", {
+                  required: "Campo Obrigatorio",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Email Inválido",
+                  },
+                })}
                 onChange={(e) => setUsuario(e.target.value)}
               />
-              <FormErrorMessage>Email inválido.</FormErrorMessage>
             </FormControl>
 
             <FormControl mt={2} mb={2}>
@@ -100,7 +107,12 @@ export function LoginPage() {
             <Flex>
               <HStack>
                 <Text fontSize="12px">Nao possui uma conta?</Text>
-                <Link as={ReachLink} to="/cadastro" color="teal" fontSize="12px">
+                <Link
+                  as={ReachLink}
+                  to="/cadastro"
+                  color="teal"
+                  fontSize="12px"
+                >
                   Cadastre-se
                 </Link>
               </HStack>
