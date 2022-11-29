@@ -4,7 +4,7 @@ import  axios  from 'axios';
 
 
 export const api = axios.create({
-    baseURL: ' https://api-vagas-emprego.herokuapp.com/api/v1'
+    baseURL: ' https://icpa-production.up.railway.app/api/v1'
     
 });
 
