@@ -4,7 +4,7 @@ import  axios  from 'axios';
 
 
 export const api = axios.create({
-    baseURL: ' https://icpa-production.up.railway.app/api/v1'
+    baseURL: 'https://corsproxy.io/?https://icpa-production.up.railway.app/api/v1'
     
 });
 
